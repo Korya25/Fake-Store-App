@@ -3,6 +3,7 @@ import 'package:fake_store_app/features/auth/presentation/views/forgot_password_
 import 'package:fake_store_app/features/auth/presentation/views/login_view.dart';
 import 'package:fake_store_app/features/auth/presentation/views/sign_up_view.dart';
 import 'package:fake_store_app/features/home/data/model/product_model.dart';
+import 'package:fake_store_app/features/home/presentation/views/categorya_product_view.dart';
 import 'package:fake_store_app/features/home/presentation/views/chart_view.dart';
 import 'package:fake_store_app/features/home/presentation/views/favorites_view.dart';
 import 'package:fake_store_app/features/home/presentation/views/home_view.dart';
@@ -41,6 +42,14 @@ GoRoute(
   builder: (context, state) {
     final product = state.extra as ProductModel;
     return ProductDetailsView(product: product);
+  },
+),
+GoRoute(
+  name: AppRoutes.categoryProducts,
+  path: AppRoutes.categoryProducts,
+  builder: (context, state) {
+    final category = state.extra as String;
+    return CategoryProductsView(category: category);
   },
 ),
 

@@ -23,7 +23,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   void initState() {
     super.initState();
-    isFavorite = widget.product.isFavorite ?? false;
+    isFavorite = widget.product.isFavorite ;
   }
 
   @override
@@ -114,14 +114,14 @@ class _ProductCardState extends State<ProductCard> {
                   return Icon(
                     Icons.star,
                     size: 14,
-                    color: index < widget.product.rating.rate.round()
+                    color: index < widget.product.rating.round()
                         ? Colors.amber
                         : Colors.grey[400],
                   );
                 }),
                 const SizedBox(width: 4),
                 Text(
-                  '(${widget.product.rating.count})',
+                  '(${widget.product.rating})',
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.6),
                     fontSize: 12,

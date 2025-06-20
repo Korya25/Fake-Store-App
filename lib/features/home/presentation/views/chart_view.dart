@@ -1,8 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:fake_store_app/core/widgets/custom_navigation_bar.dart';
 import 'package:fake_store_app/core/widgets/primary_button.dart';
-import 'package:fake_store_app/features/home/data/model/fake_products.dart';
-import 'package:fake_store_app/features/home/data/model/product_model.dart';
-import 'package:flutter/material.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
 import 'package:fake_store_app/core/resource/app_text_style.dart';
 
@@ -14,15 +12,56 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  // Cart item model: product + quantity
-  List<_CartProduct> cartItems = [
-    _CartProduct(product: fakeProducts[0], quantity: 1),
-    _CartProduct(product: fakeProducts[1], quantity: 2),
-    _CartProduct(product: fakeProducts[2], quantity: 1),
+  final List<Map<String, dynamic>> cartItems = [
+    {
+      'id': '1',
+      'title': 'Pullover',
+      'brand': 'Mango',
+      'color': 'Gray',
+      'size': 'L',
+      'price': 51.0,
+      'quantity': 1,
+      'image': 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg',
+    },
+    {
+      'id': '2',
+      'title': 'T-shirt',
+      'brand': 'Dorothy Perkins',
+      'color': 'Yellow',
+      'size': 'M',
+      'price': 30.0,
+      'quantity': 1,
+      'image': 'https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg',
+    },
+    {
+      'id': '3',
+      'title': 'Sport Dress',
+      'brand': 'Dorothy Perkins',
+      'color': 'Black',
+      'size': 'M',
+      'price': 43.0,
+      'quantity': 1,
+      'image': 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
+    },
   ];
 
   double get totalAmount => cartItems.fold(
-      0, (sum, item) => sum + (item.product.price * item.quantity));
+      0, (sum, item) => sum + (item['price'] * item['quantity']));
+
+  void updateQuantity(int index, int delta) {
+    setState(() {
+      final newQuantity = cartItems[index]['quantity'] + delta;
+      if (newQuantity > 0) {
+        cartItems[index]['quantity'] = newQuantity;
+      }
+    });
+  }
+
+  void removeItem(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,133 +70,114 @@ class _CartViewState extends State<CartView> {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: Text('My Bag',
-            style: AppTextStyle.text.copyWith(fontWeight: FontWeight.w600)),
         centerTitle: true,
         iconTheme: const IconThemeData(color: AppColors.white),
+        title: Text('My Bag',
+            style: AppTextStyle.text.copyWith(fontWeight: FontWeight.w600)),
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.separated(
+            child: ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: cartItems.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 16),
-              itemBuilder: (context, index) {
-                final item = cartItems[index];
-                return _CartItem(
-                  cartProduct: item,
-                  onRemove: () => setState(() => cartItems.removeAt(index)),
-                  onQtyChanged: (delta) {
-                    setState(() {
-                      item.quantity = (item.quantity + delta).clamp(1, 99);
-                    });
-                  },
-                );
-              },
+              itemBuilder: (context, index) => CartItemCard(
+                item: cartItems[index],
+                onRemove: () => removeItem(index),
+                onIncrease: () => updateQuantity(index, 1),
+                onDecrease: () => updateQuantity(index, -1),
+              ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: AppColors.dark,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Total amount:',
-                        style: AppTextStyle.descriptiveItems
-                            .copyWith(color: AppColors.grey)),
-                    Text('\$${totalAmount.toStringAsFixed(2)}',
-                        style: AppTextStyle.text
-                            .copyWith(fontWeight: FontWeight.w600)),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                PrimaryButton(text: 'CHECK OUT', onPressed: () {}),
-              ],
-            ),
-          ),
+          CartTotalSection(total: totalAmount),
         ],
       ),
-      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 1),
+      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 2),
     );
   }
 }
-
-// Helper class to pair ProductModel with quantity
-class _CartProduct {
-  final ProductModel product;
-  int quantity;
-  _CartProduct({required this.product, this.quantity = 1});
-}
-
-class _CartItem extends StatelessWidget {
-  final _CartProduct cartProduct;
+class CartItemCard extends StatelessWidget {
+  final Map<String, dynamic> item;
   final VoidCallback onRemove;
-  final Function(int) onQtyChanged;
+  final VoidCallback onIncrease;
+  final VoidCallback onDecrease;
 
-  const _CartItem({
-    required this.cartProduct,
+  const CartItemCard({
+    super.key,
+    required this.item,
     required this.onRemove,
-    required this.onQtyChanged,
+    required this.onIncrease,
+    required this.onDecrease,
   });
 
   @override
   Widget build(BuildContext context) {
-    final product = cartProduct.product;
     return Container(
+      margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-          color: AppColors.dark, borderRadius: BorderRadius.circular(8)),
+        color: AppColors.dark,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(product.image,
-                width: 80, height: 80, fit: BoxFit.cover),
+            child: Image.network(
+              item['image'],
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(product.title,
+                Text(item['title'],
                     style: AppTextStyle.descriptiveItems
                         .copyWith(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 4),
-                Text(product.category,
+                Text(item['brand'],
                     style: AppTextStyle.descriptionText
                         .copyWith(color: AppColors.grey)),
                 const SizedBox(height: 4),
-                // If you have color/size, display here, else skip
-                // Row(
-                //   children: [
-                //     Text('Color: ...', style: ...),
-                //     const SizedBox(width: 16),
-                //     Text('Size: ...', style: ...),
-                //   ],
-                // ),
+                Row(
+                  children: [
+                    Text('Color: ${item['color']}',
+                        style: AppTextStyle.helperText
+                            .copyWith(color: AppColors.grey)),
+                    const SizedBox(width: 16),
+                    Text('Size: ${item['size']}',
+                        style: AppTextStyle.helperText
+                            .copyWith(color: AppColors.grey)),
+                  ],
+                ),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        _qtyBtn(Icons.remove, () => onQtyChanged(-1)),
+                        _QuantityButton(
+                          icon: Icons.remove,
+                          color: AppColors.background,
+                          onTap: onDecrease,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(cartProduct.quantity.toString(),
+                          child: Text(item['quantity'].toString(),
                               style: AppTextStyle.descriptiveItems),
                         ),
-                        _qtyBtn(Icons.add, () => onQtyChanged(1),
-                            color: AppColors.primary),
+                        _QuantityButton(
+                          icon: Icons.add,
+                          color: AppColors.primary,
+                          onTap: onIncrease,
+                        ),
                       ],
                     ),
-                    Text('\$${product.price.toStringAsFixed(2)}',
+                    Text('${item['price'].toStringAsFixed(2)}',
                         style: AppTextStyle.descriptiveItems
                             .copyWith(fontWeight: FontWeight.w600)),
                   ],
@@ -174,17 +194,69 @@ class _CartItem extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _qtyBtn(IconData icon, VoidCallback onTap,
-      {Color color = AppColors.background}) {
+class _QuantityButton extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _QuantityButton({
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 24,
         height: 24,
-        decoration:
-            BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(4),
+        ),
         child: Icon(icon, size: 16, color: AppColors.white),
+      ),
+    );
+  }
+}
+class CartTotalSection extends StatelessWidget {
+  final double total;
+
+  const CartTotalSection({super.key, required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: AppColors.dark,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Total amount:',
+                  style: AppTextStyle.descriptiveItems
+                      .copyWith(color: AppColors.grey)),
+              Text('\$${total.toStringAsFixed(2)}',
+                  style:
+                      AppTextStyle.text.copyWith(fontWeight: FontWeight.w600)),
+            ],
+          ),
+          const SizedBox(height: 16),
+          PrimaryButton(
+            text: 'CHECK OUT',
+            onPressed: () {
+              // Implement checkout logic
+            },
+          ),
+        ],
       ),
     );
   }

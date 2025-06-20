@@ -4,6 +4,8 @@ import 'package:fake_store_app/core/api/dio_consumer.dart';
 import 'package:fake_store_app/core/cache/cache_helper.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
 import 'package:fake_store_app/core/resource/app_router.dart';
+import 'package:fake_store_app/features/home/data/repo/product_repo.dart';
+import 'package:fake_store_app/features/home/presentation/controller/product_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,8 +20,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:(context) => UserCubit(UserRepo(apiConsumer:DioConsumer()),),
+    return MultiBlocProvider(
+      providers: [
+            BlocProvider(create:   (context) => UserCubit(UserRepo(apiConsumer:DioConsumer()))),
+            BlocProvider(create:   (context) =>ProductCubit(ProductRepo(api: DioConsumer()))..getAllProducts(),)
+
+      ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

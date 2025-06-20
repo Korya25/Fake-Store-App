@@ -15,7 +15,7 @@ class EndPoint {
   static const String products = '/products';
   static String productById(int id) => '/products/$id';
   static const String categories = '/products/categories';
-  static String productsByCategory(String name) => '/products/category/$name';
+  static String productsByCategory(String category) => '/products/category/$category';
 
   // Carts
   static const String carts = '/carts';

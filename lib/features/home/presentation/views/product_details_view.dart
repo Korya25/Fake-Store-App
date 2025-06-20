@@ -1,7 +1,9 @@
 import 'package:fake_store_app/core/widgets/primary_button.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
 import 'package:fake_store_app/core/resource/app_text_style.dart';
+import 'package:fake_store_app/features/home/presentation/controller/product_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/model/product_model.dart';
 
 class ProductDetailsView extends StatefulWidget {
@@ -91,7 +93,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             Row(
                               children: List.generate(5, (index) {
                                 return Icon(
-                                  index < widget.product.rating.rate.floor()
+                                  index < widget.product.rating.floor()
                                       ? Icons.star
                                       : Icons.star_border,
                                   color: Colors.amber,
@@ -101,7 +103,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              '(${widget.product.rating.rate})',
+                              '(${widget.product.rating})',
                               style: AppTextStyle.descriptionText.copyWith(color: AppColors.grey),
                             ),
                           ],
@@ -200,9 +202,20 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: PrimaryButton(
-                    text: 'ADD TO CART',
-                    onPressed: () => _showAddToCartBottomSheet(context),
-                  ),
+  text: 'ADD TO CART',
+  onPressed: () {
+    Navigator.pop(context);
+
+    context.read<ProductCubit>().addToCart(widget.product);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Added to cart successfully!', style: AppTextStyle.descriptiveItems),
+        backgroundColor: AppColors.success,
+      ),
+    );
+  },
+),
+
                 ),
               ],
             ),

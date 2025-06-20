@@ -1,65 +1,60 @@
 class ProductModel {
   final int id;
   final String title;
-  final double price;
   final String description;
+  final double price;
   final String category;
   final String image;
-  final Rating rating;
-  final bool? isFavorite;
+  final double rating;
+  final int count;
+  final bool isFavorite;
 
   ProductModel({
     required this.id,
     required this.title,
-    required this.price,
     required this.description,
+    required this.price,
     required this.category,
     required this.image,
     required this.rating,
-    this.isFavorite = false, 
+    required this.count,
+    this.isFavorite = false,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
       id: json['id'],
       title: json['title'],
-      price: (json['price'] as num).toDouble(),
       description: json['description'],
+      price: (json['price'] as num).toDouble(),
       category: json['category'],
       image: json['image'],
-      rating: Rating.fromJson(json['rating']),
+      rating: (json['rating']['rate'] as num).toDouble(),
+      count: json['rating']['count'],
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'price': price,
-        'description': description,
-        'category': category,
-        'image': image,
-        'rating': rating.toJson(),
-      };
-}
-
-class Rating {
-  final double rate;
-  final int count;
-
-  Rating({
-    required this.rate,
-    required this.count,
-  });
-
-  factory Rating.fromJson(Map<String, dynamic> json) {
-    return Rating(
-      rate: (json['rate'] as num).toDouble(),
-      count: json['count'],
+  ProductModel copyWith({
+    int? id,
+    String? title,
+    String? description,
+    double? price,
+    String? category,
+    String? image,
+    double? rating,
+    int? count,
+    bool? isFavorite,
+  }) {
+    return ProductModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      category: category ?? this.category,
+      image: image ?? this.image,
+      rating: rating ?? this.rating,
+      count: count ?? this.count,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        'rate': rate,
-        'count': count,
-      };
 }
