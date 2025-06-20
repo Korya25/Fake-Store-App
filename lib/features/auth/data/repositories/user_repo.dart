@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:fake_store_app/anth/data/models/login_model.dart';
-import 'package:fake_store_app/anth/data/models/sign_up_model.dart';
-import 'package:fake_store_app/anth/data/models/user_model.dart';
+import 'package:fake_store_app/features/auth/data/models/login_model.dart';
+import 'package:fake_store_app/features/auth/data/models/sign_up_model.dart';
+import 'package:fake_store_app/features/auth/data/models/user_model.dart';
 import 'package:fake_store_app/core/api/api_consumer.dart';
 import 'package:fake_store_app/core/api/end_point.dart';
 import 'package:fake_store_app/core/cache/cache_helper.dart';

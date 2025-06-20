@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fake_store_app/anth/data/models/user_model.dart';
-import 'package:fake_store_app/anth/data/repositories/user_repo.dart';
-import 'package:fake_store_app/anth/presentation/controller/user_state.dart';
+import 'package:fake_store_app/features/auth/data/models/user_model.dart';
+import 'package:fake_store_app/features/auth/data/repositories/user_repo.dart';
+import 'package:fake_store_app/features/auth/presentation/controller/user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserRepo userRepo;

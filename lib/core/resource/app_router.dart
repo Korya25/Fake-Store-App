@@ -1,7 +1,7 @@
 import 'package:fake_store_app/core/resource/app_routes.dart';
-import 'package:fake_store_app/anth/presentation/views/forgot_password_page.dart';
-import 'package:fake_store_app/anth/presentation/views/login_view.dart';
-import 'package:fake_store_app/anth/presentation/views/sign_up_view.dart';
+import 'package:fake_store_app/features/auth/presentation/views/forgot_password_page.dart';
+import 'package:fake_store_app/features/auth/presentation/views/login_view.dart';
+import 'package:fake_store_app/features/auth/presentation/views/sign_up_view.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {

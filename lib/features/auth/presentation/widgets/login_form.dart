@@ -1,6 +1,6 @@
-import 'package:fake_store_app/anth/presentation/controller/user_cubit.dart';
+import 'package:fake_store_app/features/auth/presentation/controller/user_cubit.dart';
 import 'package:fake_store_app/core/resource/app_routes.dart';
-import 'package:fake_store_app/anth/presentation/widgets/auth_fotter_buttom.dart';
+import 'package:fake_store_app/features/auth/presentation/widgets/auth_fotter_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:fake_store_app/core/utils/validators.dart';
 import 'package:fake_store_app/core/widgets/custom_text_field.dart';

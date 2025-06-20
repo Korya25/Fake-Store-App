@@ -1,4 +1,4 @@
-import 'package:fake_store_app/anth/data/models/user_model.dart';
+import 'package:fake_store_app/features/auth/data/models/user_model.dart';
 
 abstract class UserState {}
 

@@ -2,12 +2,12 @@ import 'package:fake_store_app/core/resource/app_routes.dart';
 import 'package:fake_store_app/core/widgets/custom_visibility_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fake_store_app/anth/presentation/widgets/auth_app_bar.dart';
-import 'package:fake_store_app/anth/presentation/widgets/login_form.dart';
-import 'package:fake_store_app/anth/presentation/widgets/social_login_buttons.dart';
+import 'package:fake_store_app/features/auth/presentation/widgets/auth_app_bar.dart';
+import 'package:fake_store_app/features/auth/presentation/widgets/login_form.dart';
+import 'package:fake_store_app/features/auth/presentation/widgets/social_login_buttons.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
-import 'package:fake_store_app/anth/presentation/controller/user_cubit.dart';
-import 'package:fake_store_app/anth/presentation/controller/user_state.dart';
+import 'package:fake_store_app/features/auth/presentation/controller/user_cubit.dart';
+import 'package:fake_store_app/features/auth/presentation/controller/user_state.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginView extends StatelessWidget {

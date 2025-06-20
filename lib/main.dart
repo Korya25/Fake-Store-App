@@ -1,5 +1,5 @@
-import 'package:fake_store_app/anth/data/repositories/user_repo.dart';
-import 'package:fake_store_app/anth/presentation/controller/user_cubit.dart';
+import 'package:fake_store_app/features/auth/data/repositories/user_repo.dart';
+import 'package:fake_store_app/features/auth/presentation/controller/user_cubit.dart';
 import 'package:fake_store_app/core/api/dio_consumer.dart';
 import 'package:fake_store_app/core/cache/cache_helper.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
