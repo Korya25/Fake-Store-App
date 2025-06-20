@@ -24,7 +24,11 @@ class ProductCardsSection extends StatelessWidget {
             onFavoriteToggle: (id) {
             },
             onTap: (id) {
-              context.pushNamed(AppRoutes.productDetails);
+            context.pushNamed(
+  AppRoutes.productDetails,
+  extra: product,
+);
+
             },
           );
         },
