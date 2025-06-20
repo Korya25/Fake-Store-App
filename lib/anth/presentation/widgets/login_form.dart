@@ -7,34 +7,35 @@ import 'package:fake_store_app/core/widgets/primary_button.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
-  final void Function(String email, String password) onSubmit;
+  final void Function(String username, String password) onSubmit;
+  final bool isLoading;
 
-  const LoginForm({super.key, required this.onSubmit});
+  const LoginForm({
+    super.key,
+    required this.onSubmit,
+    this.isLoading = false,
+  });
 
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
 
+
 class _LoginFormState extends State<LoginForm> {
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _showValidationErrors = false;
-Map<String, bool> _hasBeenEdited = {'email': false, 'password': false};
+final Map<String, bool> _hasBeenEdited = {'username': false, 'password': false};
 
 
-  bool _isLoading = false;
 
  void _submit() async {
   setState(() => _showValidationErrors = true);
   if (!_formKey.currentState!.validate()) return;
 
-  setState(() => _isLoading = true);
-  await Future.delayed(const Duration(seconds: 2));
-  setState(() => _isLoading = false);
-
   widget.onSubmit(
-    _emailController.text.trim(),
+    _usernameController.text.trim(),
     _passwordController.text,
   );
 }
@@ -49,20 +50,20 @@ Map<String, bool> _hasBeenEdited = {'email': false, 'password': false};
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomTextField(
-            controller: _emailController,
-            labelText: 'Email',
+            controller: _usernameController,
+            labelText: 'username',
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
     if (!Validators.isValidEmail(value ?? '')) return 'Invalid';
     return null;
   },
-  hasError: _hasBeenEdited['email']! &&
-      !Validators.isValidEmail(_emailController.text),
-  isValid: _hasBeenEdited['email']! &&
-      Validators.isValidEmail(_emailController.text),
+  hasError: _hasBeenEdited['username']! &&
+      !Validators.isValidEmail(_usernameController.text),
+  isValid: _hasBeenEdited['username']! &&
+      Validators.isValidEmail(_usernameController.text),
   showIconOnly: !_showValidationErrors, 
   onChanged: (value) {
-    setState(() => _hasBeenEdited['email'] = true);
+    setState(() => _hasBeenEdited['username'] = true);
   },
           ),
           const SizedBox(height: 16),
@@ -90,10 +91,11 @@ Map<String, bool> _hasBeenEdited = {'email': false, 'password': false};
           ),
           const SizedBox(height: 32),
           PrimaryButton(
-            text: 'LOGIN',
-            onPressed: _isLoading ? null : _submit,
-            isLoading: _isLoading,
-          ),
+  text: 'LOGIN',
+  onPressed: widget.isLoading ? null : _submit,
+  isLoading: widget.isLoading,
+),
+
         ],
       ),
     );
@@ -101,7 +103,7 @@ Map<String, bool> _hasBeenEdited = {'email': false, 'password': false};
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }

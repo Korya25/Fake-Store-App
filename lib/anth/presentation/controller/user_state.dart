@@ -43,3 +43,9 @@ class GetSingleUserFailure extends UserState {
   final String errorMessage;
   GetSingleUserFailure(this.errorMessage);
 }
+class ForgotPasswordLoading extends UserState {}
+class ForgotPasswordSuccess extends UserState {}
+class ForgotPasswordFailure extends UserState {
+  final String errorMessage;
+  ForgotPasswordFailure(this.errorMessage);
+}

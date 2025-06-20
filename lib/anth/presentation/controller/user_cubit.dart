@@ -61,4 +61,17 @@ class UserCubit extends Cubit<UserState> {
       (userModel) => emit(GetSingleUserSuccess(userModel)),
     );
   }
+
+  Future<void> forgotPassword({required String email}) async {
+  emit(ForgotPasswordLoading());
+
+  try {
+    // Api Call
+    await Future.delayed(const Duration(seconds: 2));
+    emit(ForgotPasswordSuccess());
+  } catch (e) {
+    emit(ForgotPasswordFailure("Failed to send reset link."));
+  }
+}
+
 }

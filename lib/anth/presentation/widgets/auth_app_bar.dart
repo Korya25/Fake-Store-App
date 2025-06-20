@@ -1,3 +1,4 @@
+import 'package:fake_store_app/core/widgets/custom_visibility_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
 import 'package:fake_store_app/core/resource/app_text_style.dart';
@@ -19,17 +20,11 @@ class AuthAppBar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Visibility(
-          visible: showBackButton,
-          maintainSize: true,
-          maintainAnimation: true,
-          maintainState: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: AppColors.ordinaryText),
-            onPressed: onBack ?? () => Navigator.pop(context),
-            splashRadius: 20,
-          ),
-        ),
+        CustomVisibilityWidget(visible: showBackButton, widget: IconButton(
+        icon: const Icon(Icons.arrow_back_ios, color: AppColors.ordinaryText),
+        onPressed: onBack ?? () => Navigator.pop(context),
+        splashRadius: 20,
+      ),),
         const SizedBox(height: 8),
         Text(
           title,

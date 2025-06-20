@@ -8,8 +8,8 @@ import 'package:fake_store_app/core/resource/app_routes.dart';
 
 class SignUpForm extends StatefulWidget {
   final void Function(String name, String email, String password) onSubmit;
-
-  const SignUpForm({super.key, required this.onSubmit});
+  final bool isLoading;
+  const SignUpForm({super.key, required this.onSubmit,  this.isLoading = false});
 
   @override
   State<SignUpForm> createState() => _SignUpFormState();
@@ -21,7 +21,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
 bool _showValidationErrors = false;
-Map<String, bool> _hasBeenEdited = {'Name': false ,'email': false, 'password': false};
+final Map<String, bool> _hasBeenEdited = {'Name': false ,'email': false, 'password': false};
 
   bool _isLoading = false;
 
@@ -107,11 +107,11 @@ Map<String, bool> _hasBeenEdited = {'Name': false ,'email': false, 'password': f
             onTap: () => context.pushNamed(AppRoutes.login),
           ),
           const SizedBox(height: 32),
-          PrimaryButton(
-            text: 'SIGN UP',
-            onPressed: _isLoading ? null : _submit,
-            isLoading: _isLoading,
-          ),
+         PrimaryButton(
+    text: 'SIGN UP',
+    onPressed: widget.isLoading ? null : _submit,
+    isLoading: widget.isLoading,
+  ),
         ],
       ),
     );

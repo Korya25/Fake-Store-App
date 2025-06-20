@@ -7,8 +7,10 @@ import 'package:fake_store_app/core/constant/app_colors.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
   final void Function(String email) onSubmit;
+    final bool isLoading;
 
-  const ForgotPasswordForm({super.key, required this.onSubmit});
+
+  const ForgotPasswordForm({super.key, required this.onSubmit,  this.isLoading = false});
 
   @override
   State<ForgotPasswordForm> createState() => _ForgotPasswordFormState();
@@ -20,18 +22,15 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 bool _showValidationErrors = false;
 final Map<String, bool> _hasBeenEdited = {'email': false};
 
-  bool _isLoading = false;
 
-  void _submit() async {
-     setState(() => _showValidationErrors = true);
+void _submit() {
+  setState(() => _showValidationErrors = true);
   if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() => _isLoading = false);
+  widget.onSubmit(_emailController.text.trim());
+}
 
-    widget.onSubmit(_emailController.text.trim());
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +66,10 @@ final Map<String, bool> _hasBeenEdited = {'email': false};
   },
           ),
           const SizedBox(height: 32),
-          PrimaryButton(
+         PrimaryButton(
             text: 'SEND',
-            onPressed: _isLoading ? null : _submit,
-            isLoading: _isLoading,
+            onPressed: widget.isLoading ? null : _submit,
+            isLoading: widget.isLoading,
           ),
         ],
       ),
