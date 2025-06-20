@@ -1,6 +1,7 @@
-import 'package:fake_store_app/core/resource/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:fake_store_app/core/resource/app_text_style.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
+
 class CustomTextField extends StatelessWidget {
   final String? labelText;
   final String? hintText;
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
   final bool enabled;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
@@ -29,83 +31,57 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.enabled = true,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (labelText != null) ...[
-          Text(
-            labelText!,
-            style: AppTextStyle.descriptionText.copyWith(
-              color: AppColors.ordinaryText,
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-        TextField(
-          controller: controller,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          onChanged: onChanged,
-          enabled: enabled,
-          style: AppTextStyle.descriptiveItems,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: AppTextStyle.descriptiveItems.copyWith(
-              color: AppColors.grey,
-            ),
-            prefixIcon: prefixIcon,
-            suffixIcon: _buildSuffixIcon(),
-            filled: true,
-            fillColor: AppColors.dark,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: hasError
-                    ? AppColors.error
-                    : isValid
-                        ? AppColors.success
-                        : AppColors.grey,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: hasError
-                    ? AppColors.error
-                    : isValid
-                        ? AppColors.success
-                        : AppColors.grey,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: hasError
-                    ? AppColors.error
-                    : isValid
-                        ? AppColors.success
-                        : AppColors.primary,
-                width: 2,
-              ),
-            ),
-          ),
+    return TextFormField(
+      validator: validator,
+      cursorColor: AppColors.grey,
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      onChanged: onChanged,
+      enabled: enabled,
+      style: AppTextStyle.descriptiveItems.copyWith(
+        color: AppColors.ordinaryText,
+      ),
+      decoration: InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        labelText: labelText,
+        labelStyle:
+            AppTextStyle.descriptiveItems.copyWith(color: AppColors.grey),
+        hintText: hintText,
+        hintStyle:
+            AppTextStyle.descriptiveItems.copyWith(color: AppColors.grey),
+        prefixIcon: prefixIcon,
+        suffixIcon: _buildSuffixIcon(),
+        filled: true,
+        fillColor: AppColors.dark,
+        errorText: hasError ? errorText : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
         ),
-        if (hasError && errorText != null) ...[
-          const SizedBox(height: 4),
-          Text(
-            errorText!,
-            style: AppTextStyle.helperText.copyWith(
-              color: AppColors.error,
-            ),
-          ),
-        ],
-      ],
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+      ),
     );
   }
 
@@ -118,4 +94,3 @@ class CustomTextField extends StatelessWidget {
     return suffixIcon;
   }
 }
-
