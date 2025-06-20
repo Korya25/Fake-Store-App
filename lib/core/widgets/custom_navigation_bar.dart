@@ -31,17 +31,15 @@ class CustomNavigationBar extends StatelessWidget {
               context.go('/home');
               break;
             case 1:
-              context.go('/category');
-              break;
-            case 2:
               context.go('/cart');
               break;
-            case 3:
+            case 2:
               context.go('/favorites');
               break;
-            case 4:
+            case 3:
               context.go('/profile');
               break;
+          
           }
         },
         items: const [
@@ -49,10 +47,7 @@ class CustomNavigationBar extends StatelessWidget {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: 'Shop',
-          ),
+        
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_bag),
             label: 'Bag',

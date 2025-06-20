@@ -114,7 +114,7 @@ class ProfileView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 4),
+      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 3),
     );
   }
 
