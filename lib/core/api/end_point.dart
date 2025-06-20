@@ -7,6 +7,9 @@ class EndPoint {
   // Users
   static const String users = '/users';
   static String userById(int id) => '/users/$id';
+  static const String getAllUsers = '/users';
+  static const String getUserById = '/users'; 
+  static const String signUp = '/users';    
 
   // Products
   static const String products = '/products';
