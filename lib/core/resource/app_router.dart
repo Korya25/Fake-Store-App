@@ -2,7 +2,6 @@ import 'package:fake_store_app/core/resource/app_routes.dart';
 import 'package:fake_store_app/features/auth/presentation/views/forgot_password_page.dart';
 import 'package:fake_store_app/features/auth/presentation/views/login_view.dart';
 import 'package:fake_store_app/features/auth/presentation/views/sign_up_view.dart';
-import 'package:fake_store_app/features/home/presentation/views/category_view.dart';
 import 'package:fake_store_app/features/home/presentation/views/chart_view.dart';
 import 'package:fake_store_app/features/home/presentation/views/favorites_view.dart';
 import 'package:fake_store_app/features/home/presentation/views/home_view.dart';
@@ -34,13 +33,7 @@ class AppRouter {
         name: AppRoutes.home,
         builder: (context, state) => const HomeView(),
       ),
-      GoRoute(
-        path: AppRoutes.category,
-        name: AppRoutes.category,
-        builder: (context, state) => CategoryView(
-          category: state.uri.queryParameters['category'] ?? '',
-        ),
-      ),
+    
       GoRoute(
         path: AppRoutes.productDetails,
         name: AppRoutes.productDetails,
