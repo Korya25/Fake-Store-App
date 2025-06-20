@@ -4,13 +4,11 @@ import 'package:fake_store_app/core/constant/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? labelText;
-  final String? hintText;
   final TextEditingController? controller;
   final bool hasError;
-  final String? errorText;
   final bool isValid;
+  final bool showIconOnly;
   final Widget? suffixIcon;
-  final Widget? prefixIcon;
   final bool obscureText;
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
@@ -20,13 +18,11 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     this.labelText,
-    this.hintText,
     this.controller,
     this.hasError = false,
-    this.errorText,
     this.isValid = false,
+    this.showIconOnly = false,
     this.suffixIcon,
-    this.prefixIcon,
     this.obscureText = false,
     this.keyboardType,
     this.onChanged,
@@ -37,50 +33,29 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
-      cursorColor: AppColors.grey,
+      validator: showIconOnly ? (_) => null : validator,
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
       onChanged: onChanged,
       enabled: enabled,
+      cursorColor: AppColors.grey,
       style: AppTextStyle.descriptiveItems.copyWith(
         color: AppColors.ordinaryText,
       ),
       decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         labelText: labelText,
-        labelStyle:
-            AppTextStyle.descriptiveItems.copyWith(color: AppColors.grey),
-        hintText: hintText,
-        hintStyle:
-            AppTextStyle.descriptiveItems.copyWith(color: AppColors.grey),
-        prefixIcon: prefixIcon,
+        labelStyle: AppTextStyle.descriptiveItems.copyWith(color: AppColors.grey),
         suffixIcon: _buildSuffixIcon(),
         filled: true,
         fillColor: AppColors.dark,
-        errorText: hasError ? errorText : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
+        // No errorText shown when showIconOnly = true
+        errorText: showIconOnly ? null : (hasError ? ' ' : null),
       ),
     );
   }

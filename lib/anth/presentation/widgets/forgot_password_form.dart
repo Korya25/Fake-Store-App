@@ -17,13 +17,14 @@ class ForgotPasswordForm extends StatefulWidget {
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final _emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
+bool _showValidationErrors = false;
+final Map<String, bool> _hasBeenEdited = {'email': false};
 
   bool _isLoading = false;
-  bool _showValidationErrors = false;
 
   void _submit() async {
-    setState(() => _showValidationErrors = true);
-    if (!_formKey.currentState!.validate()) return;
+     setState(() => _showValidationErrors = true);
+  if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
     await Future.delayed(const Duration(seconds: 2));
@@ -52,15 +53,18 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             controller: _emailController,
             labelText: 'Email',
             keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (value == null || !Validators.isValidEmail(value)) {
-                return 'Not a valid email address. Should be your@email.com';
-              }
-              return null;
-            },
-            hasError: _showValidationErrors &&
-                !Validators.isValidEmail(_emailController.text),
-            isValid: Validators.isValidEmail(_emailController.text),
+           validator: (value) {
+    if (!Validators.isValidEmail(value ?? '')) return 'Invalid';
+    return null;
+  },
+  hasError: _hasBeenEdited['email']! &&
+      !Validators.isValidEmail(_emailController.text),
+  isValid: _hasBeenEdited['email']! &&
+      Validators.isValidEmail(_emailController.text),
+  showIconOnly: !_showValidationErrors,
+  onChanged: (value) {
+    setState(() => _hasBeenEdited['email'] = true);
+  },
           ),
           const SizedBox(height: 32),
           PrimaryButton(

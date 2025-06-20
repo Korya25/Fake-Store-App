@@ -1,20 +1,18 @@
-import 'package:fake_store_app/features/presentation/widgets/forgot_password_form.dart';
+import 'package:fake_store_app/anth/presentation/widgets/sign_up_form.dart';
+import 'package:fake_store_app/anth/presentation/widgets/social_login_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:fake_store_app/core/resource/app_routes.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
-import 'package:fake_store_app/features/presentation/widgets/auth_app_bar.dart';
+import 'package:fake_store_app/anth/presentation/widgets/auth_app_bar.dart';
 import 'package:go_router/go_router.dart';
 
 
-class ForgotPasswordView extends StatelessWidget {
-  const ForgotPasswordView({super.key});
+class SignUpView extends StatelessWidget {
+  const SignUpView({super.key});
 
-  void _handleSubmit(BuildContext context, String email) {
+  void _onSignUp(BuildContext context, String name, String email, String password) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Password reset link sent to your email'),
-        backgroundColor: AppColors.success,
-      ),
+      const SnackBar(content: Text('Sign up successful!')),
     );
     context.pushNamed(AppRoutes.login);
   }
@@ -30,9 +28,12 @@ class ForgotPasswordView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AuthAppBar(title: 'Forgot password'),
+                AuthAppBar(title: 'Sign up', showBackButton: false),
                 const SizedBox(height: 32),
-                ForgotPasswordForm(onSubmit: (email) => _handleSubmit(context, email)),
+                SignUpForm(onSubmit: (name, email, password) => _onSignUp(context, name, email, password)),
+                const SizedBox(height: 24),
+                const SizedBox(height: 32),
+                const SocialLoginButtons(),
               ],
             ),
           ),

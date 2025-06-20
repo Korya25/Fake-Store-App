@@ -1,32 +1,30 @@
 import 'package:fake_store_app/core/resource/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:fake_store_app/core/constant/app_colors.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SocialLoginButtons extends StatelessWidget {
   const SocialLoginButtons({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Or sign up with social account text
         Text(
           'Or sign up with social account',
           style: AppTextStyle.descriptionText.copyWith(
             color: AppColors.ordinaryText,
           ),
         ),
-        
         const SizedBox(height: 16),
-        
-        // Social buttons
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Google Button
             _SocialButton(
               onTap: () {
-                // Handle Google login
+                   _showTopToast();
+
               },
               child: Image.network(
                 'https://developers.google.com/identity/images/g-logo.png',
@@ -34,13 +32,11 @@ class SocialLoginButtons extends StatelessWidget {
                 height: 24,
               ),
             ),
-            
             const SizedBox(width: 16),
-            
-            // Facebook Button
             _SocialButton(
               onTap: () {
-                // Handle Facebook login
+                    _showTopToast();
+
               },
               child: const Icon(
                 Icons.facebook,
@@ -54,6 +50,7 @@ class SocialLoginButtons extends StatelessWidget {
     );
   }
 }
+
 
 class _SocialButton extends StatelessWidget {
   final Widget child;
@@ -79,4 +76,15 @@ class _SocialButton extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showTopToast() {
+  Fluttertoast.showToast(
+    msg: "Soon...",
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.TOP,
+    backgroundColor: Colors.black87,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }

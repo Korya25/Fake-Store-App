@@ -1,5 +1,5 @@
 import 'package:fake_store_app/core/resource/app_routes.dart';
-import 'package:fake_store_app/features/presentation/widgets/auth_fotter_buttom.dart';
+import 'package:fake_store_app/anth/presentation/widgets/auth_fotter_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:fake_store_app/core/utils/validators.dart';
 import 'package:fake_store_app/core/widgets/custom_text_field.dart';
@@ -19,23 +19,26 @@ class _LoginFormState extends State<LoginForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
+  bool _showValidationErrors = false;
+Map<String, bool> _hasBeenEdited = {'email': false, 'password': false};
+
 
   bool _isLoading = false;
-  bool _showValidationErrors = false;
 
-  void _submit() async {
-    setState(() => _showValidationErrors = true);
-    if (!_formKey.currentState!.validate()) return;
+ void _submit() async {
+  setState(() => _showValidationErrors = true);
+  if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() => _isLoading = false);
+  setState(() => _isLoading = true);
+  await Future.delayed(const Duration(seconds: 2));
+  setState(() => _isLoading = false);
 
-    widget.onSubmit(
-      _emailController.text.trim(),
-      _passwordController.text,
-    );
-  }
+  widget.onSubmit(
+    _emailController.text.trim(),
+    _passwordController.text,
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,29 +53,35 @@ class _LoginFormState extends State<LoginForm> {
             labelText: 'Email',
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
-              if (value == null || !Validators.isValidEmail(value)) {
-                return 'Please enter a valid email';
-              }
-              return null;
-            },
-            hasError: _showValidationErrors &&
-                !Validators.isValidEmail(_emailController.text),
-            isValid: Validators.isValidEmail(_emailController.text),
+    if (!Validators.isValidEmail(value ?? '')) return 'Invalid';
+    return null;
+  },
+  hasError: _hasBeenEdited['email']! &&
+      !Validators.isValidEmail(_emailController.text),
+  isValid: _hasBeenEdited['email']! &&
+      Validators.isValidEmail(_emailController.text),
+  showIconOnly: !_showValidationErrors, 
+  onChanged: (value) {
+    setState(() => _hasBeenEdited['email'] = true);
+  },
           ),
           const SizedBox(height: 16),
           CustomTextField(
             controller: _passwordController,
             labelText: 'Password',
             obscureText: true,
-            validator: (value) {
-              if (value == null || !Validators.isValidPassword(value)) {
-                return 'Password must be at least 6 characters';
-              }
-              return null;
-            },
-            hasError: _showValidationErrors &&
-                !Validators.isValidPassword(_passwordController.text),
-            isValid: Validators.isValidPassword(_passwordController.text),
+   validator: (value) {
+    if (!Validators.isValidPassword(value ?? '')) return 'Invalid';
+    return null;
+  },
+  hasError: _hasBeenEdited['password']! &&
+      !Validators.isValidEmail(_passwordController.text),
+  isValid: _hasBeenEdited['password']! &&
+      Validators.isValidEmail(_passwordController.text),
+  showIconOnly: !_showValidationErrors,
+  onChanged: (value) {
+    setState(() => _hasBeenEdited['password'] = true);
+  },
           ),
           const SizedBox(height: 16),
           AuthFotterButtom(
