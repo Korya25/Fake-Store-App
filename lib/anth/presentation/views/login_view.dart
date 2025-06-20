@@ -26,13 +26,13 @@ class LoginView extends StatelessWidget {
               children: [
                 AuthAppBar(title: 'Login'),
                 const SizedBox(height: 32),
-
+    
                 BlocBuilder<UserCubit, UserState>(
                   builder: (context, state) {
                     final isLoading = state is LoginLoading;
                     final hasError = state is LoginFailure;
                     final errorMessage = hasError ? (state).errorMessage : null;
-
+    
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -42,12 +42,12 @@ class LoginView extends StatelessWidget {
                             context.read<UserCubit>().login(
                               username: username,
                               password: password,
-
                             );
+    context.goNamed(AppRoutes.home);
                           },
                         ),
                 const SizedBox(height: 20),
-
+    
                         Center(
                           child: CustomVisibilityWidget(
                             visible: hasError,
@@ -67,7 +67,7 @@ class LoginView extends StatelessWidget {
                     );
                   },
                 ),
-
+    
                 const SizedBox(height: 20),
                 const SocialLoginButtons(),
               ],

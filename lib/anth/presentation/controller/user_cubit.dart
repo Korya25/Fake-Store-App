@@ -73,5 +73,9 @@ class UserCubit extends Cubit<UserState> {
     emit(ForgotPasswordFailure("Failed to send reset link."));
   }
 }
+void reset() {
+  emit(UserInitial());
+}
+
 
 }

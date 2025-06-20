@@ -81,9 +81,9 @@ class _SocialButton extends StatelessWidget {
 void _showTopToast() {
   Fluttertoast.showToast(
     msg: "Soon...",
-    toastLength: Toast.LENGTH_SHORT,
+    toastLength: Toast.LENGTH_LONG,
     gravity: ToastGravity.TOP,
-    backgroundColor: Colors.black87,
+    backgroundColor:AppColors.primary,
     textColor: Colors.white,
     fontSize: 16.0,
   );
