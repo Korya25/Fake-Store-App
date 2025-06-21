@@ -20,18 +20,16 @@ class AuthAppBar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomVisibilityWidget(visible: showBackButton, widget: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: AppColors.ordinaryText),
-        onPressed: onBack ?? () => Navigator.pop(context),
-        splashRadius: 20,
+        CustomVisibilityWidget(visible: showBackButton, widget: GestureDetector(
+        onTap: onBack ?? () => Navigator.pop(context),
+        child:  Icon(Icons.arrow_back_ios, color: AppColors.ordinaryText),
       ),),
-        const SizedBox(height: 8),
+         SizedBox(height: 8),
         Text(
           title,
           style: AppTextStyle.headline
           ,
         ),
-        const SizedBox(height: 24),
       ],
     );
   }
