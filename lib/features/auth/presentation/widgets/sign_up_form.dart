@@ -124,7 +124,6 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   void dispose() {
-      context.read<UserCubit>().reset(); 
 
     _nameController.dispose();
     _emailController.dispose();
